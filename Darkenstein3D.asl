@@ -78,6 +78,30 @@
     };
     vars.Helper.Settings.Create(_settings);
     #endregion
+
+    //Creating the setting for the episode names to sit under
+    settings.Add("Levels", true, "All Levels");
+    //Dictionary containing all of the episodes that can be split on	
+	vars.Levels = new Dictionary<string,string>
+	{
+        {"Level001",            "1. God Damn Nazi Dogs"},
+        {"Level002",            "2. Don't Drop The Soap"},
+        {"Level003",            "3. Catacomb Raider"},
+        {"Level004",            "4. Tutancomeon"},
+        {"Level005",            "5. Hans Up!"},
+        {"Level006",            "6. Pübermensch Wing"},
+        {"Level007",            "7. To Moröhn Labs"},
+        {"Level008",            "8. I, Manbaby"},
+        {"Level009",            "9. Hypopothermia"},
+        {"Level010",            "10. The U-Goat"},
+        {"Level011",            "11. Oh Mummy"},
+        {"Level012",            "12. The Judgement Woof"},
+	};
+	
+    //When a new level is detected and is in the dictionary, add it as a setting value which we will use to split later on
+	foreach (var script in vars.Levels) {
+		settings.Add(script.Key, true, script.Value, "Levels");
+	}
     }
 
     init
@@ -145,12 +169,17 @@
 
     start
     {
-        return old.levelStart == false && current.levelStart == true;
+        return old.levelStart == false && current.levelStart == true || old.activeScene == "MainMenu" && current.activeScene != "MainMenu";
     }
 
     split
     {
-        return current.activeScene != old.activeScene && current.activeScene != "IntroScene" && current.activeScene != "MainMenu-Demo" && current.activeScene != "MainMenu";
+        //if the level is in the settings, has not been entered into the dictionary yet, and is not Null or White Space
+        if(settings[current.activeScene] && !vars.completedSplits.Contains(current.activeScene) && !String.IsNullOrWhiteSpace(current.activeScene))
+        {
+            vars.completedSplits.Add(current.activeScene);
+            return true;
+        }
     }
 
     isLoading
