@@ -106,8 +106,6 @@
 
     init
     {
-        vars.SceneLoading = "";
-
         //Enable if having scene print issues - a custom function defined in init, the `scene` is the scene's address (e.g. vars.Helper.Scenes.Active.Address)
         vars.ReadSceneName = (Func<IntPtr, string>)(scene => {
         string name = vars.Helper.ReadString(256, ReadStringType.UTF8, scene + 0x38);
@@ -117,7 +115,7 @@
         // This is where we will load custom properties from the code
         vars.Helper.TryLoad = (Func<dynamic, bool>)(mono =>
         {
-        vars.Helper["placeholder"] = mono.Make<bool>("MyPlayerController", "levelStart");
+        vars.Helper["placeholder"] = mono.Make<Vector3f>("CheckpointManager", "activeCheckpoint");
         vars.Helper["isInCutscene"] = mono.Make<bool>("CutsceneManager", "isInCutscene");
         vars.Helper["isPaused"] = mono.Make<bool>("PauseManager", "GameIsPaused");
         vars.Helper["levelStart"] = mono.Make<bool>("MyPlayerController", "levelStart");
@@ -126,6 +124,7 @@
         });
 
         //Clears errors when scene and other variables are null, will get updated once they get detected
+        vars.completedSplits = new List<string>();
         current.placeholder = 0;
         current.Scene = "";
         current.activeScene = "";
@@ -141,6 +140,11 @@
         else
             vars.RemoveText(text1);     //Otherwise, remove it
     });
+    }
+
+    onStart
+    {
+        vars.completedSplits.Add(current.activeScene);
     }
 
     update
@@ -169,7 +173,7 @@
 
     start
     {
-        return old.levelStart == false && current.levelStart == true || old.activeScene == "MainMenu" && current.activeScene != "MainMenu";
+        return (old.levelStart == false && current.levelStart == true && current.activeScene != "MainMenu") || (old.activeScene == "MainMenu" && current.activeScene != "MainMenu");
     }
 
     split
@@ -185,4 +189,9 @@
     isLoading
     {
         return current.loadingScene != current.activeScene || current.isInLevelFinishScreen;
+    }
+
+    onReset
+    {
+        vars.completedSplits.Clear();
     }
