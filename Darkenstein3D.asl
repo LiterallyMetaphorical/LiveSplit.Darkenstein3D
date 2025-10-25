@@ -93,10 +93,11 @@
         // This is where we will load custom properties from the code
         vars.Helper.TryLoad = (Func<dynamic, bool>)(mono =>
         {
-        vars.Helper["placeholder"] = mono.Make<bool>("PauseManager", "GameIsPaused");
+        vars.Helper["placeholder"] = mono.Make<bool>("MyPlayerController", "levelStart");
         vars.Helper["isInCutscene"] = mono.Make<bool>("CutsceneManager", "isInCutscene");
         vars.Helper["isPaused"] = mono.Make<bool>("PauseManager", "GameIsPaused");
         vars.Helper["levelStart"] = mono.Make<bool>("MyPlayerController", "levelStart");
+        vars.Helper["isInLevelFinishScreen"] = mono.Make<bool>("FloorComplete", "isInLevelFinishScreen");
         return true;
         });
 
@@ -106,6 +107,7 @@
         current.activeScene = "";
         current.loadingScene = "";
         current.loading = false;
+        current.levelStart = false;
 
     //Helper function that sets or removes text depending on whether the setting is enabled - only works in `init` or later because `startup` cannot read setting values
         vars.SetTextIfEnabled = (Action<string, object>)((text1, text2) =>
@@ -143,7 +145,7 @@
 
     start
     {
-        return old.activeScene != "Level001" && current.activeScene == "Level001";
+        return old.levelStart == false && current.levelStart == true;
     }
 
     split
@@ -153,5 +155,5 @@
 
     isLoading
     {
-        return current.loadingScene != current.activeScene;
+        return current.loadingScene != current.activeScene || current.isInLevelFinishScreen;
     }
