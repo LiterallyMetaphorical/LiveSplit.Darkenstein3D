@@ -84,7 +84,7 @@
     //Dictionary containing all of the episodes that can be split on	
 	vars.Levels = new Dictionary<string,string>
 	{
-        {"Level001",            "1. God Damn Nazi Dogs"},
+        //{"Level001",            "1. God Damn Nazi Dogs"},
         {"Level002",            "2. Don't Drop The Soap"},
         {"Level003",            "3. Catacomb Raider"},
         {"Level004",            "4. Tutancomeon"},
