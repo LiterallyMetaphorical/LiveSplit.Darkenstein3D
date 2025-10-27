@@ -84,7 +84,7 @@
     //Dictionary containing all of the episodes that can be split on	
 	vars.Levels = new Dictionary<string,string>
 	{
-        //{"Level001",            "1. God Damn Nazi Dogs"},
+        {"Level001",            "1. God Damn Nazi Dogs"},
         {"Level002",            "2. Don't Drop The Soap"},
         {"Level003",            "3. Catacomb Raider"},
         {"Level004",            "4. Tutancomeon"},
@@ -173,15 +173,15 @@
 
     start
     {
-        return (old.levelStart == false && current.levelStart == true && current.activeScene != "MainMenu") || (old.activeScene == "MainMenu" && current.activeScene != "MainMenu");
+        return (old.levelStart == false && current.levelStart == true && current.activeScene != "MainMenu" && current.activeScene != "IntroScene") || (old.activeScene == "MainMenu" && current.activeScene != "MainMenu");
     }
 
     split
     {
         //if the level is in the settings, has not been entered into the dictionary yet, and is not Null or White Space
-        if(settings[current.activeScene] && !vars.completedSplits.Contains(current.activeScene) && !String.IsNullOrWhiteSpace(current.activeScene))
+        if(settings[old.activeScene] && !vars.completedSplits.Contains(old.activeScene))
         {
-            vars.completedSplits.Add(current.activeScene);
+            vars.completedSplits.Add(old.activeScene);
             return true;
         }
     }
