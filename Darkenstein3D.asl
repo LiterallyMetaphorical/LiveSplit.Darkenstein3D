@@ -173,7 +173,7 @@
 
     start
     {
-        return (old.levelStart == false && current.levelStart == true && current.activeScene != "MainMenu" && current.activeScene != "IntroScene") || (old.activeScene == "MainMenu" && current.activeScene != "MainMenu");
+        return (old.levelStart == false && current.levelStart == true && current.activeScene != "MainMenu" && current.activeScene != "IntroScene");
     }
 
     split
