@@ -115,8 +115,8 @@
         // This is where we will load custom properties from the code
         vars.Helper.TryLoad = (Func<dynamic, bool>)(mono =>
         {
-        vars.Helper["placeholder"] = mono.Make<Vector3f>("CheckpointManager", "activeCheckpoint");
-        vars.Helper["isInCutscene"] = mono.Make<bool>("CutsceneManager", "isInCutscene");
+        vars.Helper["placeholder"] = mono.Make<Vector3f>("MyPlayerController", "levelStart");
+        //vars.Helper["isInCutscene"] = mono.Make<bool>("CutsceneManager", "isInCutscene");
         vars.Helper["isPaused"] = mono.Make<bool>("PauseManager", "GameIsPaused");
         vars.Helper["levelStart"] = mono.Make<bool>("MyPlayerController", "levelStart");
         vars.Helper["isInLevelFinishScreen"] = mono.Make<bool>("FloorComplete", "isInLevelFinishScreen");
